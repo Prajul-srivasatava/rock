@@ -134,17 +134,17 @@
       const computerHand = document.getElementById('computerHand');
       const resultBox = document.getElementById('result');
 
-      // Reset and animate hands
+   
       playerHand.textContent = '✊';
       computerHand.textContent = '✊';
       playerHand.classList.remove('shake');
       computerHand.classList.remove('shake');
 
-      void playerHand.offsetWidth; // reflow for animation reset
+      void playerHand.offsetWidth; 
       playerHand.classList.add('shake');
       computerHand.classList.add('shake');
 
-      // After animation
+    
       setTimeout(() => {
         playerHand.textContent = choices[playerChoice];
         computerHand.textContent = choices[computerChoice];
