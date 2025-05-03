@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rock Paper Scissors - Pro Edition</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #fff;
+      margin: 0;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .scoreboard {
+      margin: 20px 0;
+      font-size: 1.3rem;
+    }
+
+    .buttons {
+      margin: 30px 0;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      background: #00c6ff;
+      background: linear-gradient(to right, #0072ff, #00c6ff);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 198, 255, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 198, 255, 0.6);
+    }
+
+    .hands {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 40px;
+      min-height: 120px;
+    }
+
+    .hand {
+      font-size: 80px;
+      margin: 0 60px;
+      animation: shake 0.7s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: rotate(90deg) translateY(0); }
+      25% { transform: rotate(90deg) translateY(-12px); }
+      50% { transform: rotate(90deg) translateY(12px); }
+      75% { transform: rotate(90deg) translateY(-6px); }
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 1.5rem;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+      transition: opacity 0.3s ease;
+    }
+
+    @media (max-width: 600px) {
+      .hand {
+        font-size: 60px;
+        margin: 0 20px;
+      }
+
+      .btn {
+        width: 80%;
+        margin: 10px auto;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Rock Paper Scissors</h1>
+
+  <div class="scoreboard">
+    🧍 You: <span id="playerScore">0</span> — 🤖 Computer: <span id="computerScore">0</span>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" onclick="play('rock')">🪨 Rock</button>
+    <button class="btn" onclick="play('paper')">📄 Paper</button>
+    <button class="btn" onclick="play('scissors')">✂️ Scissors</button>
+  </div>
+
+  <div class="hands">
+    <div id="playerHand" class="hand">✊</div>
+    <div id="computerHand" class="hand">✊</div>
+  </div>
+
+  <div id="result" class="result"></div>
+
+  <script>
+    const choices = {
+      rock: '✊',
+      paper: '✋',
+      scissors: '✌️'
+    };
+
+    let playerScore = 0;
+    let computerScore = 0;
+
+    function play(playerChoice) {
+      const options = ['rock', 'paper', 'scissors'];
+      const computerChoice = options[Math.floor(Math.random() * 3)];
+
+      const playerHand = document.getElementById('playerHand');
+      const computerHand = document.getElementById('computerHand');
+      const resultBox = document.getElementById('result');
+
+      // Reset and animate hands
+      playerHand.textContent = '✊';
+      computerHand.textContent = '✊';
+      playerHand.classList.remove('shake');
+      computerHand.classList.remove('shake');
+
+      void playerHand.offsetWidth; // reflow for animation reset
+      playerHand.classList.add('shake');
+      computerHand.classList.add('shake');
+
+      // After animation
+      setTimeout(() => {
+        playerHand.textContent = choices[playerChoice];
+        computerHand.textContent = choices[computerChoice];
+
+        let result = '';
+        if (playerChoice === computerChoice) {
+          result = "🤝 It's a tie!";
+        } else if (
+          (playerChoice === 'rock' && computerChoice === 'scissors') ||
+          (playerChoice === 'paper' && computerChoice === 'rock') ||
+          (playerChoice === 'scissors' && computerChoice === 'paper')
+        ) {
+          result = "🎉 You win!";
+          playerScore++;
+        } else {
+          result = "💻 Computer wins!";
+          computerScore++;
+        }
+
+        document.getElementById('playerScore').textContent = playerScore;
+        document.getElementById('computerScore').textContent = computerScore;
+
+        resultBox.innerHTML = `
+          You chose <b>${playerChoice}</b> &nbsp;&nbsp; 🤝 &nbsp;&nbsp;
+          Computer chose <b>${computerChoice}</b><br><br>
+          ${result}
+        `;
+      }, 700);
+    }
+  </script>
+
+</body>
+</html>
